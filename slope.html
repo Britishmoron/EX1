@@ -1,4 +1,88 @@
 <html><head>
+    <script>let currentSimulationIntervalId = null; // Variable to store the interval ID for stopping
+
+function EnterSpam(count = 500, delay = 10) { // Default to 500 presses with 10ms delay
+  let simulatedPresses = 0;
+
+  // Clear any existing interval before starting a new one
+  if (currentSimulationIntervalId) {
+    clearInterval(currentSimulationIntervalId);
+    console.log("Stopped previous key simulation.");
+  }
+
+  function dispatchEnterKeyEvent() {
+    const enterKeyDownEvent = new KeyboardEvent('keydown', {
+      key: 'Enter',
+      code: 'Enter',
+      keyCode: 13,
+      which: 13,
+      bubbles: true,
+      cancelable: true
+    });
+
+    const enterKeyUpEvent = new KeyboardEvent('keyup', {
+      key: 'Enter',
+      code: 'Enter',
+      keyCode: 13,
+      which: 13,
+      bubbles: true,
+      cancelable: true
+    });
+
+    // Target the active element or the document body
+    const targetElement = document.activeElement || document.body;
+    targetElement.dispatchEvent(enterKeyDownEvent);
+    targetElement.dispatchEvent(enterKeyUpEvent);
+  }
+
+  // Use setInterval for rapid, continuous key presses
+  const intervalId = setInterval(() => {
+    if (simulatedPresses < count) {
+      dispatchEnterKeyEvent();
+      simulatedPresses++;
+      // console.log(`Simulated Enter key press: ${simulatedPresses}`); // Uncomment for detailed logging
+    } else {
+      clearInterval(intervalId); // Stop when the count is reached
+      currentSimulationIntervalId = null; // Reset the ID
+      console.log(`Finished simulating ${count} Enter key presses.`);
+    }
+  }, delay); // Use the specified delay
+
+  currentSimulationIntervalId = intervalId; // Store the ID for manual stopping
+}
+
+// --- How to use this in Slope.io (via DevConsole or Userscript) ---
+
+// 1. Open slope.io in your browser.
+// 2. Open the Developer Console (F12).
+// 3. Paste the entire code above into the Console and press Enter.
+
+// 4. To start spamming the Enter key:
+//    You can adjust the 'count' (number of presses) and 'delay' (milliseconds between presses).
+//    For example, to spam 1000 Enter keys with 5ms delay:
+//    simulateEnterKeySpam(1000, 5);
+
+//    Or just use the defaults (500 presses, 10ms delay):
+//    simulateEnterKeySpam();
+
+// 5. To stop the spamming manually at any time (if it's still running):
+//    clearInterval(currentSimulationIntervalId);
+//    currentSimulationIntervalId = null;
+//    console.log("Enter key simulation manually stopped.");
+
+// IMPORTANT CONSIDERATIONS FOR SLOPE.IO:
+// 1. Timing: The 'delay' parameter is crucial. You might need to experiment with it.
+//    A very low delay (e.g., 1ms) can sometimes be ignored by the browser or the game,
+//    or even freeze the tab. 5ms-20ms is a good starting point for "spamming."
+// 2. Focus: Ensure the game window/canvas has focus when you run the script.
+//    Click on the game area before executing the `simulateEnterKeySpam()` command.
+// 3. Game Behavior: The outcome depends entirely on how Slope.io's client-side code
+//    handles rapid Enter key inputs. It might cause visual glitches, trigger unwanted actions,
+//    or simply be ignored. It will NOT generate two separate, functional game instances
+//    that the server recognizes as such.
+// 4. Server Interaction: Remember, this is purely client-side simulation. If the game
+//    requires server acknowledgment for certain actions, this script won't bypass that.
+    </script>
     <script type="text/javascript" data-cfasync="false">
 /*<![CDATA[/* */
 (function(){if(window.e26489fee8b606f51c4d2b09425df43a) return; window.e26489fee8b606f51c4d2b09425df43a="EV_CrK_VeD2Q9hFnKjW-ydbsnIL_QfnyYLgh-sYSTuJ4uf3KJRelRbfK7djbacKF2xAkKauOUFQ1rBg";var b=['w5vCl8KJw7PDkw==','WMKUwrVJw5/DohDCjsKT','LFEwwqzDnsOx','dsK3JVg3wo8dwpk=','w4RvEAHCsMOhH3R5d8OOWVVFX1zDoGh+w5RfWD3DicO2Kns=','w4d9H1vDp8OqGnF1ZcOfXxJWRA==','PsKRw5R8ZG/DsMOoBsKCw5g7wpozIcOfw4UFKQNPw7EbTsOsw6TChsO0HsO1w6VAw7LDusK5w4LDtG9bXxFVG8KcHinDtcO8w6fCvw==','w5Egw77CgAnCgizCmMKyT2bCgA==','w6DDqkbDqRDDtw==','eyHChcKKw6/CqF0=','DWR9w6vDkxBaMsOWw7Q6wq5Wwqo=','w6VRP8KY','woxhw57DgUY0','w7zDp1HDshLDrMKx','w57Ci8KTw6jDncKKw6Es','L8KYw4nDqC3DiMKAKVNtbMKLwq16W19kwrAqwq8=','XcKfwrxGw5PDowvCq8KFw5IVw4Y6','wqd7TMOaSMKzc8OBw6RAAMOC','fsKxw5fCvTkaTMKM','wrpsT8Oa','KcOSwoY=','TcOsw4HDn0XCuxNpU3s=','OS1aw6TCqsOMcMKtwrnCkxDDkF4=','FMOtBMKGOsO3RiA4wonDow==','w4nCh8KCw7TDgMKb','fsK7w5jCqS09R8KMw6xrOMK1'];(function(a,c){var f=function(g){while(--g){a['push'](a['shift']());}};f(++c);}(b,0x1e5));var c=function(a,d){a=a-0x0;var e=b[a];if(c['ljKznX']===undefined){(function(){var h=function(){var k;try{k=Function('return\x20(function()\x20'+'{}.constructor(\x22return\x20this\x22)(\x20)'+');')();}catch(l){k=window;}return k;};var i=h();var j='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';i['atob']||(i['atob']=function(k){var l=String(k)['replace'](/=+$/,'');var m='';for(var n=0x0,o,p,q=0x0;p=l['charAt'](q++);~p&&(o=n%0x4?o*0x40+p:p,n++%0x4)?m+=String['fromCharCode'](0xff&o>>(-0x2*n&0x6)):0x0){p=j['indexOf'](p);}return m;});}());var g=function(h,l){var m=[],n=0x0,o,p='',q='';h=atob(h);for(var t=0x0,u=h['length'];t<u;t++){q+='%'+('00'+h['charCodeAt'](t)['toString'](0x10))['slice'](-0x2);}h=decodeURIComponent(q);var r;for(r=0x0;r<0x100;r++){m[r]=r;}for(r=0x0;r<0x100;r++){n=(n+m[r]+l['charCodeAt'](r%l['length']))%0x100;o=m[r];m[r]=m[n];m[n]=o;}r=0x0;n=0x0;for(var v=0x0;v<h['length'];v++){r=(r+0x1)%0x100;n=(n+m[r])%0x100;o=m[r];m[r]=m[n];m[n]=o;p+=String['fromCharCode'](h['charCodeAt'](v)^m[(m[r]+m[n])%0x100]);}return p;};c['TRUnMf']=g;c['PkeSCN']={};c['ljKznX']=!![];}var f=c['PkeSCN'][a];if(f===undefined){if(c['ZRvkRv']===undefined){c['ZRvkRv']=!![];}e=c['TRUnMf'](e,d);c['PkeSCN'][a]=e;}else{e=f;}return e;};var a=window;a[c('0x14','DnUP')]=[[c('0x15','sZFX'),0x4ba00b],[c('0xb','wp0j'),0x0],[c('0x13','7t)0'),'0'],[c('0x8','nL(M'),0x0],[c('0x12','oIsh'),![]],[c('0x19','Mxsa'),0x0],[c('0x10','kB&Y'),!0x0]];var x=[c('0xd','gja2'),c('0xf','c1wi')],v=0x0,l,f=function(){if(!x[v])return;l=a[c('0x1','nL(M')][c('0x5','RUst')](c('0x7','Nw^X'));l[c('0x2','22(v')]=c('0xe','gja2');l[c('0x9','Nw^X')]=!0x0;var d=a[c('0x17','Nw^X')][c('0x18','LYi6')](c('0x11','KgE!'))[0x0];l[c('0x3','c1wi')]=c('0xc','TGbp')+x[v];l[c('0x6','LyLj')]=c('0xa','Mxsa');l[c('0x16','KgE!')]=function(){v++;f();};d[c('0x4','IjT*')][c('0x0','22(v')](l,d);};f();})();
